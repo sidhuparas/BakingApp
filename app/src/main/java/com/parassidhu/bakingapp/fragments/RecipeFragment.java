@@ -1,4 +1,4 @@
-package com.parassidhu.bakingapp;
+package com.parassidhu.bakingapp.fragments;
 
 import android.content.Context;
 import android.net.Uri;
@@ -19,12 +19,12 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
+import com.parassidhu.bakingapp.R;
+import com.parassidhu.bakingapp.adapters.RecipeListAdapter;
 import com.parassidhu.bakingapp.models.ListItem;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;

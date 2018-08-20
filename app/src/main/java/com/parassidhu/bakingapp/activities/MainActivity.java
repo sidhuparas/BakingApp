@@ -1,9 +1,11 @@
-package com.parassidhu.bakingapp;
+package com.parassidhu.bakingapp.activities;
 
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.FrameLayout;
+
+import com.parassidhu.bakingapp.R;
+import com.parassidhu.bakingapp.fragments.RecipeFragment;
 
 public class MainActivity extends AppCompatActivity implements RecipeFragment.OnFragmentInteractionListener{
 
