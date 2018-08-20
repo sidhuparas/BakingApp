@@ -11,8 +11,6 @@ import android.widget.TextView;
 
 import com.parassidhu.bakingapp.models.ListItem;
 
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -47,6 +45,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.name) TextView name;
+        @BindView(R.id.image) ImageView image;
 
         public ViewHolder(View view) {
             super(view);
@@ -54,7 +53,22 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Vi
         }
 
         void bind(int position) {
-         name.setText(listItems.get(position).getName());
+            name.setText(listItems.get(position).getName());
+
+            switch (position){
+                case 0:
+                    image.setImageResource(R.drawable.img_nutella_pie);
+                    break;
+                case 1:
+                    image.setImageResource(R.drawable.img_brownies);
+                    break;
+                case 2:
+                    image.setImageResource(R.drawable.img_yellow_cake);
+                    break;
+                case 3:
+                    image.setImageResource(R.drawable.img_cheesecake);
+                    break;
+            }
         }
     }
 }
