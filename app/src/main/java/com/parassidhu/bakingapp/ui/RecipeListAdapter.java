@@ -1,4 +1,4 @@
-package com.parassidhu.bakingapp.adapters;
+package com.parassidhu.bakingapp.ui;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parassidhu.bakingapp.R;
-import com.parassidhu.bakingapp.models.ListItem;
+import com.parassidhu.bakingapp.model.ListItem;
 
 import java.util.ArrayList;
 

@@ -1,5 +1,4 @@
-package com.parassidhu.bakingapp.fragments;
-
+package com.parassidhu.bakingapp.ui;
 
 import android.os.Bundle;
 import android.app.Fragment;
@@ -9,16 +8,9 @@ import android.view.ViewGroup;
 
 import com.parassidhu.bakingapp.R;
 
-
-/**
- * A simple {@link Fragment} subclass.
- */
 public class StepListFragment extends Fragment {
 
-
-    public StepListFragment() {
-        // Required empty public constructor
-    }
+    public StepListFragment() { }
 
 
     @Override

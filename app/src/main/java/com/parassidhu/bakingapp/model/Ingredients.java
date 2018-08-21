@@ -1,16 +1,16 @@
-package com.parassidhu.bakingapp.models;
+package com.parassidhu.bakingapp.model;
 
 public class Ingredients {
-    private int quantity;
+    private float quantity;
     private String measure, ingredient;
 
-    public Ingredients(int quantity, String measure, String ingredient) {
+    public Ingredients(float quantity, String measure, String ingredient) {
         this.quantity = quantity;
         this.measure = measure;
         this.ingredient = ingredient;
     }
 
-    public int getQuantity() {
+    public float getQuantity() {
         return quantity;
     }
 

@@ -1,4 +1,4 @@
-package com.parassidhu.bakingapp.models;
+package com.parassidhu.bakingapp.model;
 
 public class Steps {
     private int id;
