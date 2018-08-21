@@ -1,4 +1,4 @@
-package com.parassidhu.bakingapp.ui;
+package com.parassidhu.bakingapp.ui.main;
 
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.parassidhu.bakingapp.R;
 
-public class MainActivity extends AppCompatActivity implements RecipeFragment.OnFragmentInteractionListener{
+public class MainActivity extends AppCompatActivity implements RecipeFragment.OnFragmentInteractionListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,14 +21,5 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
     @Override
     public void onFragmentInteraction(Uri uri) {
 
-    }
-
-    public static class StepsActivity extends AppCompatActivity {
-
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_steps);
-        }
     }
 }

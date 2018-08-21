@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.RecipeFragment">
+    tools:context=".ui.main.RecipeFragment">
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"

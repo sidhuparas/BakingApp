@@ -1,9 +1,10 @@
-package com.parassidhu.bakingapp.ui;
+package com.parassidhu.bakingapp.ui.main;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,9 @@ import com.parassidhu.bakingapp.R;
 import com.parassidhu.bakingapp.model.Ingredients;
 import com.parassidhu.bakingapp.model.ListItem;
 import com.parassidhu.bakingapp.model.Steps;
+import com.parassidhu.bakingapp.ui.RecipeListAdapter;
+import com.parassidhu.bakingapp.ui.detail.StepsActivity;
+import com.parassidhu.bakingapp.utils.ItemClickSupport;
 import com.parassidhu.bakingapp.viewmodel.MainViewModel;
 
 import org.json.JSONArray;
@@ -66,6 +70,7 @@ public class RecipeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         initialSetup();
         setupViewModel();
+        setRclListener();
     }
 
     private void setupViewModel() {
@@ -97,6 +102,16 @@ public class RecipeFragment extends Fragment {
     private void initialSetup() {
         context = getActivity();
         mRecipeList.setLayoutManager(new GridLayoutManager(context, 2));
+    }
+
+    private void setRclListener(){
+        ItemClickSupport.addTo(mRecipeList).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Intent intent = new Intent(getActivity(), StepsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     // TODO: Rename method, update argument and hook method into UI event
