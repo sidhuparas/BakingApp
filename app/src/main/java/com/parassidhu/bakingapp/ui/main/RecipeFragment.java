@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -31,6 +32,7 @@ import com.parassidhu.bakingapp.model.ListItem;
 import com.parassidhu.bakingapp.model.Steps;
 import com.parassidhu.bakingapp.ui.RecipeListAdapter;
 import com.parassidhu.bakingapp.ui.detail.StepsActivity;
+import com.parassidhu.bakingapp.utils.Constants;
 import com.parassidhu.bakingapp.utils.ItemClickSupport;
 import com.parassidhu.bakingapp.viewmodel.MainViewModel;
 
@@ -109,6 +111,8 @@ public class RecipeFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 Intent intent = new Intent(getActivity(), StepsActivity.class);
+                intent.putParcelableArrayListExtra(Constants.STEPS, new ArrayList<Parcelable>(stepsList));
+                intent.putParcelableArrayListExtra(Constants.INGREDIENTS, new ArrayList<Parcelable>(ingredientsList));
                 startActivity(intent);
             }
         });

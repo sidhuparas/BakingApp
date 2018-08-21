@@ -1,6 +1,9 @@
 package com.parassidhu.bakingapp.model;
 
-public class Ingredients {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Ingredients implements Parcelable {
     private float quantity;
     private String measure, ingredient;
 
@@ -33,4 +36,34 @@ public class Ingredients {
     public void setIngredient(String ingredient) {
         this.ingredient = ingredient;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeFloat(this.quantity);
+        dest.writeString(this.measure);
+        dest.writeString(this.ingredient);
+    }
+
+    protected Ingredients(Parcel in) {
+        this.quantity = in.readFloat();
+        this.measure = in.readString();
+        this.ingredient = in.readString();
+    }
+
+    public static final Creator<Ingredients> CREATOR = new Creator<Ingredients>() {
+        @Override
+        public Ingredients createFromParcel(Parcel source) {
+            return new Ingredients(source);
+        }
+
+        @Override
+        public Ingredients[] newArray(int size) {
+            return new Ingredients[size];
+        }
+    };
 }
