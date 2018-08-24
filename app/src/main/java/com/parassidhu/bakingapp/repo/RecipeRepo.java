@@ -32,7 +32,8 @@ public class RecipeRepo {
         this.context = application;
     }
 
-    public MutableLiveData<List<ListItem>> getContentFromAPI() {
+    public LiveData<List<ListItem>> getContentFromAPI() {
+        Log.d("Recipe", "getContentFromAPI: Called");
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 context.getResources().getString(R.string.url), new Response.Listener<String>() {
             @Override

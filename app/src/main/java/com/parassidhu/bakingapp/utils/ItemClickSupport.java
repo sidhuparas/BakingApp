@@ -4,7 +4,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.parassidhu.bakingapp.R;
-import com.parassidhu.popularmovies.R;
 
 public class ItemClickSupport {
     private final RecyclerView mRecyclerView;

@@ -1,9 +1,14 @@
 package com.parassidhu.bakingapp.ui.detail;
 
+import android.os.Parcelable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.parassidhu.bakingapp.R;
+import com.parassidhu.bakingapp.utils.Constants;
+
+import java.util.ArrayList;
 
 public class StepsActivity extends AppCompatActivity {
 
@@ -12,8 +17,19 @@ public class StepsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new StepListFragment())
-                .commit();
+        ArrayList<Parcelable> steps = new ArrayList<>();
+        ArrayList<Parcelable> ingredients = new ArrayList<>();
+
+        if (getIntent().getExtras()!=null){
+            steps = getIntent().getParcelableArrayListExtra(Constants.STEPS);
+            ingredients = getIntent().getParcelableArrayListExtra(Constants.INGREDIENTS);
+        }
+
+        if (steps!=null && ingredients!=null) {
+            Fragment fragment = StepListFragment.newInstance(steps,ingredients);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.container, fragment)
+                    .commit();
+        }
     }
 }
