@@ -1,10 +1,13 @@
 package com.parassidhu.bakingapp.ui.detail;
 
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,14 +16,18 @@ import android.view.ViewGroup;
 import com.parassidhu.bakingapp.R;
 import com.parassidhu.bakingapp.model.Ingredients;
 import com.parassidhu.bakingapp.model.Steps;
+import com.parassidhu.bakingapp.ui.IngredientsAdapter;
 import com.parassidhu.bakingapp.utils.Constants;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class StepListFragment extends Fragment {
+
+    @BindView(R.id.ingredientsList) RecyclerView ingredientsRcl;
 
     private ArrayList<Steps> stepsList = new ArrayList<>();
     private ArrayList<Ingredients> ingredientsList = new ArrayList<>();
@@ -28,7 +35,7 @@ public class StepListFragment extends Fragment {
     public StepListFragment() { }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_step_list, container, false);
         ButterKnife.bind(this, view);
@@ -39,12 +46,20 @@ public class StepListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Log.d("list", "onViewCreated: " + stepsList.get(0).getDescription());
 
+        setupViews();
     }
 
-    private void readBundle(Bundle bundle){
-        if (bundle!=null){
+    private void setupViews() {
+        ingredientsRcl.setLayoutManager(new LinearLayoutManager(getActivity(),
+                LinearLayoutManager.HORIZONTAL, false));
+
+        IngredientsAdapter adapter = new IngredientsAdapter(getActivity(), ingredientsList);
+        ingredientsRcl.setAdapter(adapter);
+    }
+
+    private void readBundle(Bundle bundle) {
+        if (bundle != null) {
             stepsList = bundle.getParcelableArrayList(Constants.STEPS);
             ingredientsList = bundle.getParcelableArrayList(Constants.INGREDIENTS);
         }

@@ -33,7 +33,6 @@ public class RecipeRepo {
     }
 
     public LiveData<List<ListItem>> getContentFromAPI() {
-        Log.d("Recipe", "getContentFromAPI: Called");
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 context.getResources().getString(R.string.url), new Response.Listener<String>() {
             @Override
@@ -45,9 +44,7 @@ public class RecipeRepo {
                             new TypeToken<List<ListItem>>(){}.getType());
                     listLiveData.postValue(listItems);
 
-                }catch (Exception ignored){
-                    Log.d("Recipe", "onResponse: Exception: " + ignored.getMessage());
-                }
+                }catch (Exception ignored){ }
             }
         }, new Response.ErrorListener() {
             @Override
