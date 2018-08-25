@@ -22,14 +22,14 @@ public class StepsActivity extends AppCompatActivity {
         ArrayList<Parcelable> steps = new ArrayList<>();
         ArrayList<Parcelable> ingredients = new ArrayList<>();
 
-        if (getIntent().getExtras()!=null){
+        if (getIntent().getExtras() != null) {
             steps = getIntent().getParcelableArrayListExtra(Constants.STEPS);
             ingredients = getIntent().getParcelableArrayListExtra(Constants.INGREDIENTS);
             setTitle(getIntent().getStringExtra(Constants.RECIPE_NAME));
         }
 
-        if (steps!=null && ingredients!=null) {
-            Fragment fragment = StepListFragment.newInstance(steps,ingredients);
+        if (steps.size() != 0 && ingredients.size() != 0) {
+            Fragment fragment = StepListFragment.newInstance(steps, ingredients);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();

@@ -1,15 +1,13 @@
 package com.parassidhu.bakingapp.ui.detail;
 
-import android.graphics.drawable.GradientDrawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,8 +18,8 @@ import com.parassidhu.bakingapp.model.Steps;
 import com.parassidhu.bakingapp.ui.IngredientsAdapter;
 import com.parassidhu.bakingapp.ui.StepsAdapter;
 import com.parassidhu.bakingapp.utils.Constants;
+import com.parassidhu.bakingapp.utils.ItemClickSupport;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -49,8 +47,20 @@ public class StepListFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-
         setupViews();
+        setListener();
+    }
+
+    private void setListener() {
+        ItemClickSupport.addTo(stepsRcl).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
+            @Override
+            public void onItemClicked(RecyclerView recyclerView, int position, View v) {
+                Intent intent = new Intent(getActivity(), StepDetailActivity.class);
+                intent.putExtra(Constants.STEPS, stepsList);
+
+                startActivity(intent);
+            }
+        });
     }
 
     private void setupViews() {
