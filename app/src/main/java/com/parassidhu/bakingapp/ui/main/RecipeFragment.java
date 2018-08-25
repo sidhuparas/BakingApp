@@ -55,6 +55,7 @@ public class RecipeFragment extends Fragment {
 
     private List<List<Steps>> stepsList = new ArrayList<>();
     private List<List<Ingredients>> ingredientsList = new ArrayList<>();
+    private List<ListItem> listItems = new ArrayList<>();
     private MainViewModel viewModel;
 
     public RecipeFragment() { }
@@ -85,6 +86,9 @@ public class RecipeFragment extends Fragment {
                     adapter = new RecipeListAdapter(context, new ArrayList<>(listItems));
                     mRecipeList.setAdapter(adapter);
 
+                    RecipeFragment.this.listItems.clear();
+                    RecipeFragment.this.listItems.addAll(listItems);
+
                     stepsList.clear();
                     ingredientsList.clear();
 
@@ -107,8 +111,12 @@ public class RecipeFragment extends Fragment {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 Intent intent = new Intent(getActivity(), StepsActivity.class);
-                intent.putParcelableArrayListExtra(Constants.STEPS, new ArrayList<Parcelable>(stepsList.get(position)));
-                intent.putParcelableArrayListExtra(Constants.INGREDIENTS, new ArrayList<Parcelable>(ingredientsList.get(position)));
+                intent.putParcelableArrayListExtra(Constants.STEPS,
+                        new ArrayList<Parcelable>(stepsList.get(position)));
+                intent.putParcelableArrayListExtra(Constants.INGREDIENTS,
+                        new ArrayList<Parcelable>(ingredientsList.get(position)));
+
+                intent.putExtra(Constants.RECIPE_NAME, listItems.get(position).getName());
                 startActivity(intent);
             }
         });

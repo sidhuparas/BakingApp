@@ -9,6 +9,7 @@ import com.parassidhu.bakingapp.R;
 import com.parassidhu.bakingapp.utils.Constants;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class StepsActivity extends AppCompatActivity {
 
@@ -16,6 +17,7 @@ public class StepsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_steps);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         ArrayList<Parcelable> steps = new ArrayList<>();
         ArrayList<Parcelable> ingredients = new ArrayList<>();
@@ -23,6 +25,7 @@ public class StepsActivity extends AppCompatActivity {
         if (getIntent().getExtras()!=null){
             steps = getIntent().getParcelableArrayListExtra(Constants.STEPS);
             ingredients = getIntent().getParcelableArrayListExtra(Constants.INGREDIENTS);
+            setTitle(getIntent().getStringExtra(Constants.RECIPE_NAME));
         }
 
         if (steps!=null && ingredients!=null) {

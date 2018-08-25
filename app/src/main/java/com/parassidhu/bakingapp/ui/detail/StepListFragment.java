@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -17,6 +18,7 @@ import com.parassidhu.bakingapp.R;
 import com.parassidhu.bakingapp.model.Ingredients;
 import com.parassidhu.bakingapp.model.Steps;
 import com.parassidhu.bakingapp.ui.IngredientsAdapter;
+import com.parassidhu.bakingapp.ui.StepsAdapter;
 import com.parassidhu.bakingapp.utils.Constants;
 
 import java.lang.reflect.Array;
@@ -28,6 +30,7 @@ import butterknife.ButterKnife;
 public class StepListFragment extends Fragment {
 
     @BindView(R.id.ingredientsList) RecyclerView ingredientsRcl;
+    @BindView(R.id.stepsList) RecyclerView stepsRcl;
 
     private ArrayList<Steps> stepsList = new ArrayList<>();
     private ArrayList<Ingredients> ingredientsList = new ArrayList<>();
@@ -56,6 +59,11 @@ public class StepListFragment extends Fragment {
 
         IngredientsAdapter adapter = new IngredientsAdapter(getActivity(), ingredientsList);
         ingredientsRcl.setAdapter(adapter);
+
+        stepsRcl.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        StepsAdapter stepsAdapter = new StepsAdapter(getActivity(), stepsList);
+        stepsRcl.setAdapter(stepsAdapter);
     }
 
     private void readBundle(Bundle bundle) {
@@ -70,7 +78,6 @@ public class StepListFragment extends Fragment {
         Bundle bundle = new Bundle();
         bundle.putParcelableArrayList(Constants.STEPS, steps);
         bundle.putParcelableArrayList(Constants.INGREDIENTS, ingredients);
-
         StepListFragment fragment = new StepListFragment();
         fragment.setArguments(bundle);
 
