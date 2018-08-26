@@ -1,4 +1,4 @@
-package com.parassidhu.bakingapp.ui;
+package com.parassidhu.bakingapp.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -6,32 +6,30 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.parassidhu.bakingapp.R;
-import com.parassidhu.bakingapp.model.Ingredients;
-import com.parassidhu.bakingapp.model.ListItem;
+import com.parassidhu.bakingapp.model.Steps;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.ViewHolder> {
-    private ArrayList<Ingredients> listItems;
+public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
+    private ArrayList<Steps> listItems;
     private Context context;
 
-    public IngredientsAdapter(Context context, ArrayList<Ingredients> listItems) {
+    public StepsAdapter(Context context, ArrayList<Steps> listItems) {
         this.context = context;
         this.listItems = listItems;
     }
 
     @NonNull
     @Override
-    public IngredientsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public StepsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).
-                inflate(R.layout.row_ingredients, viewGroup, false);
+                inflate(R.layout.row_steps, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -46,8 +44,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.quantity) TextView quantity;
-        @BindView(R.id.desc) TextView description;
+        @BindView(R.id.step) TextView stepTv;
 
         ViewHolder(View view) {
             super(view);
@@ -55,9 +52,8 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         }
 
         void bind(int position) {
-            Ingredients ingredient = listItems.get(position);
-            quantity.setText(ingredient.getQuantity() + " " + ingredient.getMeasure());
-            description.setText(ingredient.getIngredient());
+            Steps step = listItems.get(position);
+            stepTv.setText(step.getShortDescription());
         }
     }
 }

@@ -1,4 +1,4 @@
-package com.parassidhu.bakingapp.ui;
+package com.parassidhu.bakingapp.ui.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,27 +10,26 @@ import android.widget.TextView;
 
 import com.parassidhu.bakingapp.R;
 import com.parassidhu.bakingapp.model.Ingredients;
-import com.parassidhu.bakingapp.model.Steps;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> {
-    private ArrayList<Steps> listItems;
+public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.ViewHolder> {
+    private ArrayList<Ingredients> listItems;
     private Context context;
 
-    public StepsAdapter(Context context, ArrayList<Steps> listItems) {
+    public IngredientsAdapter(Context context, ArrayList<Ingredients> listItems) {
         this.context = context;
         this.listItems = listItems;
     }
 
     @NonNull
     @Override
-    public StepsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+    public IngredientsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).
-                inflate(R.layout.row_steps, viewGroup, false);
+                inflate(R.layout.row_ingredients, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -45,7 +44,8 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
-        @BindView(R.id.step) TextView stepTv;
+        @BindView(R.id.quantity) TextView quantity;
+        @BindView(R.id.desc) TextView description;
 
         ViewHolder(View view) {
             super(view);
@@ -53,8 +53,9 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.ViewHolder> 
         }
 
         void bind(int position) {
-            Steps step = listItems.get(position);
-            stepTv.setText(step.getShortDescription());
+            Ingredients ingredient = listItems.get(position);
+            quantity.setText(ingredient.getQuantity() + " " + ingredient.getMeasure());
+            description.setText(ingredient.getIngredient());
         }
     }
 }

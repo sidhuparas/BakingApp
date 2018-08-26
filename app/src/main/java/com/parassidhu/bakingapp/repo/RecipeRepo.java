@@ -16,11 +16,9 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.parassidhu.bakingapp.R;
 import com.parassidhu.bakingapp.model.ListItem;
-import com.parassidhu.bakingapp.ui.RecipeListAdapter;
 
 import org.json.JSONArray;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class RecipeRepo {

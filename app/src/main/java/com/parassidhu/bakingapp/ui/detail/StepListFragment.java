@@ -15,8 +15,8 @@ import android.view.ViewGroup;
 import com.parassidhu.bakingapp.R;
 import com.parassidhu.bakingapp.model.Ingredients;
 import com.parassidhu.bakingapp.model.Steps;
-import com.parassidhu.bakingapp.ui.IngredientsAdapter;
-import com.parassidhu.bakingapp.ui.StepsAdapter;
+import com.parassidhu.bakingapp.ui.adapter.IngredientsAdapter;
+import com.parassidhu.bakingapp.ui.adapter.StepsAdapter;
 import com.parassidhu.bakingapp.utils.Constants;
 import com.parassidhu.bakingapp.utils.ItemClickSupport;
 
