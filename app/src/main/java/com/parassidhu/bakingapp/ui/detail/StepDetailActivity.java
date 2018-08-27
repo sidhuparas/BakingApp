@@ -1,12 +1,11 @@
 package com.parassidhu.bakingapp.ui.detail;
+
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.parassidhu.bakingapp.R;
-import com.parassidhu.bakingapp.model.Ingredients;
 import com.parassidhu.bakingapp.model.Steps;
-import com.parassidhu.bakingapp.ui.main.RecipeFragment;
 import com.parassidhu.bakingapp.utils.Constants;
 
 import java.util.ArrayList;
