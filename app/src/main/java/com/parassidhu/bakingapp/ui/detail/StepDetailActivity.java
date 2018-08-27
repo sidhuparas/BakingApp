@@ -18,13 +18,15 @@ public class StepDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_step_detail);
 
         ArrayList<Steps> stepsList = new ArrayList<>();
+        int position = 0;
 
         if (getIntent() != null){
             stepsList = getIntent().getParcelableArrayListExtra(Constants.STEPS);
+            position = getIntent().getIntExtra(Constants.POSITION, 0);
         }
 
         if (stepsList.size()!=0){
-            Fragment fragment = StepDetailFragment.newInstance(stepsList);
+            Fragment fragment = StepDetailFragment.newInstance(stepsList, position);
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.container, fragment)
                     .commit();

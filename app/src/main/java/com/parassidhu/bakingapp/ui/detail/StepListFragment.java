@@ -57,6 +57,7 @@ public class StepListFragment extends Fragment {
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
                 Intent intent = new Intent(getActivity(), StepDetailActivity.class);
                 intent.putExtra(Constants.STEPS, stepsList);
+                intent.putExtra(Constants.POSITION, position);
 
                 startActivity(intent);
             }
