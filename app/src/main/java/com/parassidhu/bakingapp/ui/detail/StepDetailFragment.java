@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.github.prototypez.savestate.core.annotation.AutoRestore;
 
 public class StepDetailFragment extends Fragment {
 
@@ -44,7 +46,12 @@ public class StepDetailFragment extends Fragment {
 
     private ArrayList<Steps> listItems = new ArrayList<>();
     private SimpleExoPlayer player;
-    private int position;
+
+    long playbackPosition;
+    int currentWindow;
+
+    @AutoRestore
+    int position;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
@@ -58,7 +65,6 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        startVideo();
     }
 
     private void startVideo() {
@@ -81,20 +87,22 @@ public class StepDetailFragment extends Fragment {
 
         player.prepare(source, true, false);
 
+        player.seekTo(currentWindow, playbackPosition);
         player.setPlayWhenReady(true);
-
     }
 
     @OnClick(R.id.next)
     void onNextClick() {
         position++;
         startVideo();
+        reset();
     }
 
     @OnClick(R.id.previous)
     void onPreviousClick() {
         position--;
         startVideo();
+        reset();
     }
 
     private void ifToShowNextAndPrevious() {
@@ -114,13 +122,45 @@ public class StepDetailFragment extends Fragment {
     }
 
     private void releasePlayer() {
+        if (player != null) {
+            currentWindow = player.getCurrentWindowIndex();
+            playbackPosition = player.getCurrentPosition();
 
+            player.release();
+            player = null;
+
+            if (getArguments() != null) {
+                getArguments().putLong(Constants.PLAYER_POSITION, playbackPosition);
+                getArguments().putLong(Constants.PLAYER_WINDOW, currentWindow);
+            }
+        }
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        releasePlayer();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        startVideo();
+    }
+
+    private void reset(){
+        currentWindow = 0;
+        playbackPosition = 0;
     }
 
     private void readBundle(Bundle bundle) {
         if (bundle != null) {
             listItems = bundle.getParcelableArrayList(Constants.STEPS);
             position = bundle.getInt(Constants.POSITION, 0);
+
+            playbackPosition = getArguments().getLong(Constants.PLAYER_POSITION);
+            currentWindow = getArguments().getInt(Constants.PLAYER_WINDOW);
         }
     }
 
@@ -129,7 +169,6 @@ public class StepDetailFragment extends Fragment {
         Bundle args = new Bundle();
         args.putParcelableArrayList(Constants.STEPS, listItems);
         args.putInt(Constants.POSITION, position);
-
         fragment.setArguments(args);
         return fragment;
     }
