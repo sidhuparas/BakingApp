@@ -21,7 +21,7 @@ import com.parassidhu.bakingapp.model.Ingredients;
 import com.parassidhu.bakingapp.model.ListItem;
 import com.parassidhu.bakingapp.model.Steps;
 import com.parassidhu.bakingapp.ui.adapter.RecipeListAdapter;
-import com.parassidhu.bakingapp.ui.detail.StepsActivity;
+import com.parassidhu.bakingapp.ui.detail.StepListActivity;
 import com.parassidhu.bakingapp.utils.Constants;
 import com.parassidhu.bakingapp.utils.ItemClickSupport;
 import com.parassidhu.bakingapp.viewmodel.MainViewModel;
@@ -98,7 +98,7 @@ public class RecipeFragment extends Fragment {
         ItemClickSupport.addTo(mRecipeList).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Intent intent = new Intent(getActivity(), StepsActivity.class);
+                Intent intent = new Intent(getActivity(), StepListActivity.class);
                 intent.putParcelableArrayListExtra(Constants.STEPS,
                         new ArrayList<Parcelable>(stepsList.get(position)));
                 intent.putParcelableArrayListExtra(Constants.INGREDIENTS,

@@ -11,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.parassidhu.bakingapp.R;
 import com.parassidhu.bakingapp.model.Ingredients;
@@ -33,6 +34,7 @@ public class StepListFragment extends Fragment {
     private ArrayList<Steps> stepsList = new ArrayList<>();
     private ArrayList<Ingredients> ingredientsList = new ArrayList<>();
 
+    boolean mTwoPane;
     public StepListFragment() { }
 
     @Override
@@ -48,6 +50,8 @@ public class StepListFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setupViews();
+
+        mTwoPane = getActivity().findViewById(R.id.two_pane_layout_root) !=null;
         setListener();
     }
 
@@ -55,11 +59,19 @@ public class StepListFragment extends Fragment {
         ItemClickSupport.addTo(stepsRcl).setOnItemClickListener(new ItemClickSupport.OnItemClickListener() {
             @Override
             public void onItemClicked(RecyclerView recyclerView, int position, View v) {
-                Intent intent = new Intent(getActivity(), StepDetailActivity.class);
-                intent.putExtra(Constants.STEPS, stepsList);
-                intent.putExtra(Constants.POSITION, position);
+                if (!mTwoPane) {
+                    Intent intent = new Intent(getActivity(), StepDetailActivity.class);
+                    intent.putExtra(Constants.STEPS, stepsList);
+                    intent.putExtra(Constants.POSITION, position);
 
-                startActivity(intent);
+                    startActivity(intent);
+                }else {
+                    getActivity().getSupportFragmentManager().beginTransaction()
+                            .replace(R.id.detail_container,
+                                    StepDetailFragment.newInstance(stepsList, position)
+                            )
+                            .commit();
+                }
             }
         });
     }

@@ -9,18 +9,20 @@ import com.parassidhu.bakingapp.R;
 import com.parassidhu.bakingapp.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.Optional;
 
-public class StepsActivity extends AppCompatActivity {
+public class StepListActivity extends AppCompatActivity {
+
+    private boolean mTwoPane;
+    private ArrayList<Parcelable> steps = new ArrayList<>();
+    private ArrayList<Parcelable> ingredients = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_steps);
+        setContentView(R.layout.activity_step_list);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        ArrayList<Parcelable> steps = new ArrayList<>();
-        ArrayList<Parcelable> ingredients = new ArrayList<>();
+        mTwoPane = findViewById(R.id.two_pane_layout_root) != null;
 
         if (getIntent().getExtras() != null) {
             steps = getIntent().getParcelableArrayListExtra(Constants.STEPS);
@@ -28,10 +30,25 @@ public class StepsActivity extends AppCompatActivity {
             setTitle(getIntent().getStringExtra(Constants.RECIPE_NAME));
         }
 
+        if (mTwoPane) {
+            replaceFragment(
+                    StepListFragment.newInstance(steps, ingredients),
+                    R.id.step_container
+            );
+
+        } else {
+            replaceFragment(
+                    StepListFragment.newInstance(steps, ingredients),
+                    R.id.container
+            );
+        }
+    }
+
+    private void replaceFragment(Fragment fragment, int id) {
         if (steps.size() != 0 && ingredients.size() != 0) {
-            Fragment fragment = StepListFragment.newInstance(steps, ingredients);
+            //Fragment fragment = StepListFragment.newInstance(steps, ingredients);
             getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.container, fragment)
+                    .replace(id, fragment)
                     .commit();
         }
     }

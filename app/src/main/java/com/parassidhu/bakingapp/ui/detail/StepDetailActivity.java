@@ -20,7 +20,7 @@ public class StepDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_step_detail);
+        setContentView(R.layout.activity_step_list);
 
         ArrayList<Steps> stepsList = new ArrayList<>();
 
