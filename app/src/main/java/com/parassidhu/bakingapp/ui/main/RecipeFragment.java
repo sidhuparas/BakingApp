@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -12,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -104,10 +106,43 @@ public class RecipeFragment extends Fragment {
                 intent.putParcelableArrayListExtra(Constants.INGREDIENTS,
                         new ArrayList<Parcelable>(ingredientsList.get(position)));
 
+                savePreferenceForWidget(
+                        ingredientsList.get(position),
+                        listItems.get(position).getName()
+                );
+
                 intent.putExtra(Constants.RECIPE_NAME, listItems.get(position).getName());
                 startActivity(intent);
             }
         });
+    }
+
+    private void savePreferenceForWidget(List<Ingredients> list, String name) {
+        SharedPreferences preferences = getActivity().getSharedPreferences(Constants.WIDGET, Context.MODE_PRIVATE);
+
+        StringBuilder ingredientsString = new StringBuilder();
+        makeIngredientsString(list, ingredientsString);
+
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString(Constants.INGREDIENTS, ingredientsString.toString());
+        editor.putString(Constants.RECIPE_NAME, name);
+        editor.apply();
+    }
+
+    private void makeIngredientsString(List<Ingredients> list, StringBuilder ingredientsString ) {
+        for (int i=0; i<list.size();i++){
+            String measure = list.get(i).getMeasure();
+            String ingredient = list.get(i).getIngredient();
+            float quantity = list.get(i).getQuantity();
+
+            ingredientsString
+                    .append(quantity)
+                    .append(" ")
+                    .append(measure)
+                    .append(" ")
+                    .append(ingredient)
+                    .append("\n");
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

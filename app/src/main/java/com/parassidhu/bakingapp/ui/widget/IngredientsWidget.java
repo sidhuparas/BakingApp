@@ -3,11 +3,14 @@ package com.parassidhu.bakingapp.ui.widget;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.widget.RemoteViews;
 
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.parassidhu.bakingapp.R;
 import com.parassidhu.bakingapp.model.Ingredients;
+import com.parassidhu.bakingapp.utils.Constants;
 
 import java.util.List;
 
@@ -22,8 +25,12 @@ public class IngredientsWidget extends AppWidgetProvider {
         CharSequence widgetText = context.getString(R.string.appwidget_text);
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.ingredients_widget);
-        views.setTextViewText(R.id.appwidget_text, widgetText);
 
+        SharedPreferences preferences = context.getSharedPreferences(Constants.WIDGET, Context.MODE_PRIVATE);
+        String ingredients = preferences.getString(Constants.INGREDIENTS,"");
+        String name = preferences.getString(Constants.RECIPE_NAME,"");
+        views.setTextViewText(R.id.recipe_name, name);
+        views.setTextViewText(R.id.appwidget_text, ingredients);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
