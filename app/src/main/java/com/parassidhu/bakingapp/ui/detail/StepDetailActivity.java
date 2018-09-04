@@ -21,6 +21,7 @@ public class StepDetailActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_step_list);
+        setTitle("Steps");
 
         ArrayList<Steps> stepsList = new ArrayList<>();
 

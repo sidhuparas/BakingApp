@@ -24,7 +24,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:id="@+id/select_step"
             android:layout_gravity="center"
-            android:text="Select a step"/>
+            android:text="@string/select_a_step"/>
     </FrameLayout>
 </LinearLayout>

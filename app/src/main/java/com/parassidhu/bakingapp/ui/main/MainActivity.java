@@ -9,7 +9,7 @@ import android.os.Bundle;
 
 import com.parassidhu.bakingapp.R;
 
-public class MainActivity extends AppCompatActivity implements RecipeFragment.OnFragmentInteractionListener {
+public class MainActivity extends AppCompatActivity {
 
     private boolean done = false;
 
@@ -23,17 +23,11 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
                     .replace(R.id.container, new RecipeFragment())
                     .commit();
         }
-
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putBoolean("done", done);
-    }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
     }
 }

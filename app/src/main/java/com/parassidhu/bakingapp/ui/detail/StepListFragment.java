@@ -25,6 +25,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.github.prototypez.savestate.core.annotation.AutoRestore;
 
 public class StepListFragment extends Fragment {
 
@@ -44,6 +45,14 @@ public class StepListFragment extends Fragment {
         ButterKnife.bind(this, view);
         readBundle(getArguments());
         return view;
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        if (savedInstanceState!=null){
+            getActivity().findViewById(R.id.select_step).setVisibility(View.GONE);
+        }
     }
 
     @Override
@@ -68,9 +77,10 @@ public class StepListFragment extends Fragment {
                 }else {
                     getActivity().getSupportFragmentManager().beginTransaction()
                             .replace(R.id.detail_container,
-                                    StepDetailFragment.newInstance(stepsList, position)
-                            )
+                                    StepDetailFragment.newInstance(stepsList, position))
                             .commit();
+
+                    getActivity().findViewById(R.id.select_step).setVisibility(View.GONE);
                 }
             }
         });
