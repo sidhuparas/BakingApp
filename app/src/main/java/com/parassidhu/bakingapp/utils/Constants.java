@@ -10,5 +10,6 @@ public class Constants {
 
     public static final String PLAYER_POSITION = "player_position";
     public static final String PLAYER_WINDOW = "player_window";
+    public static final String PLAYER_PLAY_WHEN_READY = "player_play_when_ready";
 
 }

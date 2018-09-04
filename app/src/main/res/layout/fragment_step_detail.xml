@@ -16,6 +16,11 @@
             android:layout_width="match_parent"
             android:layout_height="200dp" />
 
+        <ImageView
+            android:id="@+id/thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
         <TextView
             android:id="@+id/title"
             android:layout_width="match_parent"

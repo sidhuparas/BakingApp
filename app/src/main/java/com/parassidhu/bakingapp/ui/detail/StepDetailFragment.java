@@ -1,58 +1,56 @@
 package com.parassidhu.bakingapp.ui.detail;
 
+import android.arch.lifecycle.Lifecycle;
+import android.arch.lifecycle.LifecycleObserver;
+import android.arch.lifecycle.OnLifecycleEvent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.DefaultRenderersFactory;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
-import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.ui.PlayerView;
-import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory;
-import com.google.android.exoplayer2.util.Util;
 import com.parassidhu.bakingapp.R;
-import com.parassidhu.bakingapp.model.ListItem;
 import com.parassidhu.bakingapp.model.Steps;
 import com.parassidhu.bakingapp.utils.Constants;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.github.prototypez.savestate.core.annotation.AutoRestore;
 
-public class StepDetailFragment extends Fragment {
+public class StepDetailFragment extends Fragment implements LifecycleObserver {
 
     @BindView(R.id.playerView) PlayerView mPlayerView;
     @BindView(R.id.next) TextView nextBtn;
     @BindView(R.id.previous) TextView previousBtn;
     @BindView(R.id.title) TextView titleTv;
     @BindView(R.id.description) TextView descriptionTv;
+    @BindView(R.id.thumbnail) ImageView thumbnailIv;
 
     public StepDetailFragment() { }
 
     private ArrayList<Steps> listItems = new ArrayList<>();
     private SimpleExoPlayer player;
 
-    long playbackPosition;
-    int currentWindow;
+    private long playbackPosition;
+    private int currentWindow;
+    private boolean playWhenReady;
 
     @AutoRestore
     int position;
@@ -66,57 +64,81 @@ public class StepDetailFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-    }
-
-    private void startVideo() {
+    void startVideoAndSetDescription() {
         ifToShowNextAndPrevious();
         Steps step = listItems.get(position);
-        initializePlayer(Uri.parse(step.getVideoURL()));
+
+        Uri videoUri = Uri.parse(step.getVideoURL());
+
+        if (!videoUri.toString().isEmpty()) {
+            initializePlayer(Uri.parse(step.getVideoURL()));
+        } else {
+            handleErrorCase();
+        }
+
         titleTv.setText(step.getShortDescription());
         descriptionTv.setText(step.getDescription());
     }
 
     private void initializePlayer(Uri uri) {
-        try {
-            player = ExoPlayerFactory.newSimpleInstance(
-                    new DefaultRenderersFactory(requireContext()),
-                    new DefaultTrackSelector(),
-                    new DefaultLoadControl()
-            );
+        mPlayerView.setVisibility(View.VISIBLE);
+        thumbnailIv.setVisibility(View.INVISIBLE);
 
-            mPlayerView.setPlayer(player);
+        player = ExoPlayerFactory.newSimpleInstance(
+                new DefaultRenderersFactory(requireContext()),
+                new DefaultTrackSelector(),
+                new DefaultLoadControl()
+        );
 
-            MediaSource source = new ExtractorMediaSource
-                    .Factory(new DefaultHttpDataSourceFactory(requireContext().getPackageName()))
-                    .createMediaSource(uri);
+        mPlayerView.setPlayer(player);
 
-            player.prepare(source, true, false);
+        MediaSource source = new ExtractorMediaSource
+                .Factory(new DefaultHttpDataSourceFactory(requireContext().getPackageName()))
+                .createMediaSource(uri);
 
-            player.seekTo(currentWindow, playbackPosition);
-            player.setPlayWhenReady(true);
-        }catch (Exception e){
-            Toast.makeText(getActivity(), "No video available for this step!", Toast.LENGTH_SHORT).show();
+        player.prepare(source, true, false);
+
+        player.seekTo(currentWindow, playbackPosition);
+        player.setPlayWhenReady(playWhenReady);
+    }
+
+    private void handleErrorCase() {
+        mPlayerView.setVisibility(View.INVISIBLE);
+        thumbnailIv.setVisibility(View.VISIBLE);
+
+        String thumbnailURL = listItems.get(position).getThumbnailURL();
+
+        if (thumbnailURL.isEmpty()){
+            Picasso.get().load(R.drawable.img_loading_error).into(thumbnailIv);
+        } else {
+            Picasso.get()
+                    .load(thumbnailURL)
+                    .placeholder(R.drawable.img_loading_cover)
+                    .error(R.drawable.img_loading_error)
+                    .into(thumbnailIv);
+        }
+    }
+
+    private void softReleasePlayer() {
+        if (player!=null) {
+            player.release();
+            player = null;
         }
     }
 
     @OnClick(R.id.next)
     void onNextClick() {
         position++;
-        player.release();
-        player = null;
-        startVideo();
+        softReleasePlayer();
+        startVideoAndSetDescription();
         reset();
     }
 
     @OnClick(R.id.previous)
     void onPreviousClick() {
         position--;
-        player.release();
-        player = null;
-        startVideo();
+        softReleasePlayer();
+        startVideoAndSetDescription();
         reset();
     }
 
@@ -136,17 +158,19 @@ public class StepDetailFragment extends Fragment {
         }
     }
 
-    private void releasePlayer() {
+    void releasePlayer() {
         if (player != null) {
             currentWindow = player.getCurrentWindowIndex();
             playbackPosition = player.getCurrentPosition();
+            playWhenReady = player.getPlayWhenReady();
 
             player.release();
             player = null;
 
             if (getArguments() != null) {
                 getArguments().putLong(Constants.PLAYER_POSITION, playbackPosition);
-                getArguments().putLong(Constants.PLAYER_WINDOW, currentWindow);
+                getArguments().putInt(Constants.PLAYER_WINDOW, currentWindow);
+                getArguments().putBoolean(Constants.PLAYER_PLAY_WHEN_READY, playWhenReady);
             }
         }
 
@@ -167,10 +191,10 @@ public class StepDetailFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        startVideo();
+        startVideoAndSetDescription();
     }
 
-    private void reset(){
+    private void reset() {
         currentWindow = 0;
         playbackPosition = 0;
     }
@@ -182,6 +206,7 @@ public class StepDetailFragment extends Fragment {
 
             playbackPosition = getArguments().getLong(Constants.PLAYER_POSITION);
             currentWindow = getArguments().getInt(Constants.PLAYER_WINDOW);
+            playWhenReady = getArguments().getBoolean(Constants.PLAYER_PLAY_WHEN_READY);
         }
     }
 

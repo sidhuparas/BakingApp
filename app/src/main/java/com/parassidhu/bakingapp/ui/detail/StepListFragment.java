@@ -51,7 +51,8 @@ public class StepListFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState!=null){
-            getActivity().findViewById(R.id.select_step).setVisibility(View.GONE);
+            if (mTwoPane)
+                getActivity().findViewById(R.id.select_step).setVisibility(View.GONE);
         }
     }
 
