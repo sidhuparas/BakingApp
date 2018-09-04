@@ -16,6 +16,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.parassidhu.bakingapp.R;
 import com.parassidhu.bakingapp.model.ListItem;
+import com.parassidhu.bakingapp.utils.EspressoIdlingResource;
 
 import org.json.JSONArray;
 
@@ -31,6 +32,7 @@ public class RecipeRepo {
     }
 
     public LiveData<List<ListItem>> getContentFromAPI() {
+        EspressoIdlingResource.increment();
         StringRequest stringRequest = new StringRequest(Request.Method.GET,
                 context.getResources().getString(R.string.url), new Response.Listener<String>() {
             @Override
@@ -41,13 +43,14 @@ public class RecipeRepo {
                     List<ListItem> listItems = gson.fromJson(jsonArray.toString(),
                             new TypeToken<List<ListItem>>(){}.getType());
                     listLiveData.postValue(listItems);
-
+                    EspressoIdlingResource.decrement();
                 }catch (Exception ignored){ }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.d("Recipe", "onErrorResponse: " + error.getMessage());
+                EspressoIdlingResource.decrement();
             }
         });
 
